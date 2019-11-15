@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
   config.ssh.shell = "/bin/tcsh"
   config.ssh.export_command_template = 'setenv %ENV_KEY% "%ENV_VALUE%"'
   config.ssh.sudo_command = '';
-  
+
   # config.ssh.insert_key = false
 
   config.vm.boot_timeout = 200
@@ -84,8 +84,10 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    # add your provision commands here...
+
+    # and finnish by restoring original shell startup menu of pfsense back to use
+    cp /etc/rc.initial.disabled /etc/rc.initial
+  SHELL
 end
