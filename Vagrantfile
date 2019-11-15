@@ -16,9 +16,14 @@ Vagrant.configure(2) do |config|
 
   config.ssh.username = "admin"
   # config.ssh.password = "pfsense"
-  config.ssh.shell = "/bin/tcsh"
 
-  config.vm.boot_timeout = 600
+  config.ssh.shell = "/bin/tcsh"
+  config.ssh.export_command_template = 'setenv %ENV_KEY% "%ENV_VALUE%"'
+  config.ssh.sudo_command = '';
+  
+  # config.ssh.insert_key = false
+
+  config.vm.boot_timeout = 200
     
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -28,11 +33,13 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 10080
+  config.vm.network "forwarded_port", guest: 80, host: 10080
+  config.vm.network "forwarded_port", guest: 443, host: 10443
   
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  #config.vm.network "private_network", ip: "192.168.33.10"
+  #config.vm.network :private_network, :ip => "192.168.2.100"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -43,7 +50,7 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder ".", "/vagrant_data"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -59,6 +66,13 @@ Vagrant.configure(2) do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
+
+  # Customize the virtual machine environments
+  config.vm.provider :virtualbox do |vb|
+    # vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
+    # vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
+    vb.gui = true # for debugging
+  end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
