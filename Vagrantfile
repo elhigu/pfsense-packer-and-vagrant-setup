@@ -17,13 +17,15 @@ Vagrant.configure(2) do |config|
   config.ssh.username = "admin"
   # config.ssh.password = "pfsense"
 
+  config.vm.guest = :freebsd
   config.ssh.shell = "/bin/tcsh"
   config.ssh.export_command_template = 'setenv %ENV_KEY% "%ENV_VALUE%"'
-  config.ssh.sudo_command = '';
+  config.ssh.sudo_command = "%c";
 
+  # shouldn't be needed... but sometimes hangs if set true
   # config.ssh.insert_key = false
 
-  config.vm.boot_timeout = 200
+  config.vm.boot_timeout = 300
     
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -50,7 +52,9 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder ".", "/vagrant_data"
+  # config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  # config.vm.synced_folder ".", "/vagrant", type: "rsync"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -84,10 +88,16 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    # add your provision commands here...
 
-    # and finnish by restoring original shell startup menu of pfsense back to use
-    cp /etc/rc.initial.disabled /etc/rc.initial
+  # add your provision commands here...
+  config.vm.provision "userscript", type: "shell", inline: <<-SHELL
+    echo WOW > /wow.txt
   SHELL
+
+  # finnish by restoring original shell startup menu of pfsense back to use
+  config.vm.provision "restoreshellmenu", type: "shell", inline: <<-SHELL
+    rm /etc/rc.initial;
+    cp /etc/rc.initial.disabled /etc/rc.initial;
+  SHELL
+
 end
