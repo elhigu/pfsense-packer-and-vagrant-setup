@@ -1,3 +1,7 @@
+#
+# Helper to cleanup and re-build vagrant box image
+#
+
 set -x
 VBoxManage controlvm packer-pfSense poweroff
 sleep 3
