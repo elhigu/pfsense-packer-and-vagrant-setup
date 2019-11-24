@@ -10,6 +10,7 @@ Very much MVP implementation for me to remind how to actually do this stuff.
 2. Vagrant https://www.vagrantup.com/downloads.html
 3. Packer https://www.packer.io/
 4. Install VirtualBox >= 6.0 (may not be absolutely necessary)
+5. Download pfSense .ISO file with `./download-installer.sh`
 
 ## Build clean vagrant-box from .ISO pfSense installation media
 
