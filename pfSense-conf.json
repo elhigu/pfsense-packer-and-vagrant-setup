@@ -4,7 +4,7 @@
     {
       "type": "virtualbox-iso",
       "guest_os_type": "FreeBSD_64",
-      "iso_url": "file://pfSense-CE-2.4.4-RELEASE-p1-amd64.iso",
+      "iso_url": "file://pfSense-CE-2.4.4-RELEASE-p3-amd64.iso",
       "iso_checksum": "1becb1846c2be237685fa34c12b04ae9",
       "iso_checksum_type": "md5",
       "disk_size": 8000,
